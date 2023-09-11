@@ -11,10 +11,12 @@ export const BookDetail = () => {
   const htmlRef = useRef(null)
 
   useEffect(() => {
-    if (htmlRef.current && !isLoading) {
-      htmlRef.current.innerHTML = data?.volumeInfo.description
-    }
-  }, [htmlRef, data, isLoading])
+  if (htmlRef.current && !isLoading) {
+    const description = data?.volumeInfo.description || ''
+    htmlRef.current.innerHTML = description
+  }
+}, [htmlRef, data, isLoading])
+
   if (isLoading) {
     return <Container>
       <Stack pt={"50px"} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
