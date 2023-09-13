@@ -5,18 +5,20 @@ import { CustomImg } from './styles'
 import { useEffect, useRef } from 'react'
 
 // тут есть баг то что показывает место search это можно исправить, но мне времени не хватило
+
+const changeInnerHtml = (el: HTMLElement, value: string) => {
+  el.innerHTML = value
+}
 export const BookDetail = () => {
   const { id } = useParams()
   const { data, isLoading } = useGetBooksByIdQuery(id ? id : ' ')
-  const htmlRef = useRef(null)
+  const htmlRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-  if (htmlRef.current && !isLoading) {
-    const description = data?.volumeInfo.description || ''
-    htmlRef.current.innerHTML = description
-  }
-}, [htmlRef, data, isLoading])
-
+    if (htmlRef.current && !isLoading) {
+      changeInnerHtml(htmlRef.current, data?.volumeInfo.description ? data?.volumeInfo.description : 'Описание отсутствует')
+    }
+  }, [htmlRef, data, isLoading])
   if (isLoading) {
     return <Container>
       <Stack pt={"50px"} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
